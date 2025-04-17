@@ -1,0 +1,22 @@
+The project asks to support a team of researchers who have been collecting data about penguins in Antartica! 
+The data is available in csv-Format as penguins.csv
+Origin of this data : Data were collected and made available by Dr. Kristen Gorman and the Palmer Station, Antarctica LTER, 
+a member of the Long Term Ecological Research Network.
+
+The dataset consists of 5 columns: culmen_length_mm, culmen_depth_mm, flipper_length_mm, body_mass_g, sex
+Unfortunately, they have not been able to record the species of penguin, but they know that there are at least three species 
+that are native to the region: Adelie, Chinstrap, and Gentoo. Your task is to apply your data science skills to help them identify groups in the dataset!
+
+
+SOLUTION:
+A: First I use the KMeans function from sklearn.cluster to divide the observations into three different clusters. (This part is enough for DataCamp task.)
+B: As an alternative I try to write the algorithm myself to cluster the observations:
+     - The algoritm starts with randomly selecting n_cluster observations as the cluster centers and then assign each observation 
+       to the closes cluster based on the Euclidean distance.
+     - Once the initial clusters are assigned a new cluster mean is calculated and the previous steps repeats
+     - The algorithm stops once the absolute difference between old cluster centers and new cluster centers is below pre-defined threshould eps.
+   Additionally, it is possible to assign eps to be different for each metric/measure in the dataset.
+   Also, different methods for choosimg an initial cluster centers can be added, but I did not implement it, because they are available in the KMeans fucntion.                                                                                                                
+                                                                                                                   
+                                                                                                                   
+                                                                                                            
