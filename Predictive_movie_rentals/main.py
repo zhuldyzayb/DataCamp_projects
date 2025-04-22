@@ -6,6 +6,8 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
+from sklearn.feature_selection import RFE
+
 pd.set_option('display.max_columns', None)
 
 rental = pd.read_csv('rental_info .csv')
@@ -30,24 +32,26 @@ plt.title("Covariance Matrix")
 #plt.show()
 
 ### Model 1:
-features_full = ['amount', 'release_year', 'rental_rate', 'length', 'replacement_cost', 'NC-17',
+features = ['amount', 'release_year', 'rental_rate', 'length', 'replacement_cost', 'NC-17',
                  'PG', 'PG-13', 'R', 'amount_2', 'length_2', 'rental_rate_2', 'deleted_scenes', 'behind_the_scenes']
-X = rental[features_full]
+X = rental[features]
 y = rental['rental_length_days']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=9)
-model_full = LinearRegression()
-model_full.fit(X_train, y_train)
-y_pred = model_full.predict(X_test)
+model = LinearRegression()
+selector = RFE(model, n_features_to_select=8, step=1)
+selector.fit(X_train, y_train)
+print("Selected features are: ", selector.get_feature_names_out())
+y_pred = selector.predict(X_test)
 print("MSE for full model: {.3%f}", mean_squared_error(y_test, y_pred))
 
 '''
-# Compute standard errors
-X_with_intercept = np.c_[np.ones(X.shape[0]), X]  # Add intercept term
+from scipy import stats
+mse = mean_squared_error(model_full.predict(X_train), y_train)
+X_with_intercept = np.c_[np.ones(X_train.shape[0]), X_train]  # Add intercept term
 cov_matrix = mse * np.linalg.inv(X_with_intercept.T @ X_with_intercept)
-se = np.sqrt(np.diag(cov_matrix))[1:]  # Exclude intercept SE
-
-# Compute t-statistics and p-values
-t_stats = reg.coef_ / se
+se = np.sqrt(np.diag(cov_matrix))[1:] # Remove intercept
+t_stats = model_full.coef_ / se
 p_values = 2 * (1 - stats.t.cdf(np.abs(t_stats), df=X.shape[0] - X.shape[1] - 1))
+print(p_values)
 '''
