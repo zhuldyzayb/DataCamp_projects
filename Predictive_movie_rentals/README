@@ -33,3 +33,13 @@ Following the preprocessing you will need to:
 - Recommend a model yielding a mean squared error (MSE) less than 3 on the test set
 
 Save the model you would recommend as a variable named best_model, and save its MSE on the test set as best_mse.
+
+
+
+
+* Output
+- The data is read and cleaned accroding to instructions, assigning appropriate data types for each column of the dataframe
+- sklearn's fature_selection.RFE functional is used to berform a backward selection and identify the best fitting model.
+
+
+
